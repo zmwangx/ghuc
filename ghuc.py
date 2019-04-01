@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import collections
 import getpass
 import json
 import logging
@@ -330,7 +331,7 @@ def upload_asset(http_client, path):
             assert r.status == 201, (
                 "/upload/policies/assets: expected HTTP 201, got %d" % r.status
             )
-            obj = json.loads(data)
+            obj = json.loads(data, object_pairs_hook=collections.OrderedDict)
             asset_url = obj["asset"]["href"]
 
             logger.debug("%s: uploading...", path)
