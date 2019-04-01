@@ -1,5 +1,10 @@
 # ghuc
 
+[![PyPI](https://img.shields.io/pypi/v/ghuc.svg?maxAge=3600)](https://pypi.org/project/ghuc)
+![Python 3.5, 3.6, 3.7](https://img.shields.io/badge/python-3.5,%203.6,%203.7-blue.svg?maxAge=86400)
+![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?maxAge=86400)
+[![CircleCI status](https://img.shields.io/circleci/project/github/zmwangx/ghuc.svg)](https://circleci.com/gh/zmwangx/workflows/ghuc)
+
 `ghuc` (derived from `githubusercontent` and pronounced *gee&middot;huck*) is a command line tool for uploading images/documents to GitHub as issue attachments. Images are then available at `https://user-images.githubusercontent.com`, and documents are available as `https://github.com/<user>/<repo>/files/...`. It automates the traditional flow of navigating to a repo -> opening an issue -> uploading an image -> copying the URL, which is very cumbersome. With the constant deterioration of Imgur, one-stop upload to user-images.githubusercontent.com is the next best thing for the occasional image embeds in docs or comment section/forum posts.
 
 `ghuc` is partially powered by Selenium WebDriver. Tested and supported on macOS, Linux, and Windows.
