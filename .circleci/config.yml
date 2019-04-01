@@ -1,0 +1,64 @@
+version: 2
+
+test-template: &test-template
+  working_directory: ~/ghuc
+  environment:
+    CONTAINER: 1
+  steps:
+    - checkout
+    - run: apt update && apt install -y --no-install-recommends libmagic-dev
+    - run: pip install '.[test]'
+    - run: pytest -s -rsxX tests.py
+
+jobs:
+  test-py35-firefox:
+    docker:
+      - image: zmwangx/docker-selenium-python:python-3.5-firefox-slim-stretch
+    <<: *test-template
+
+  test-py36-firefox:
+    docker:
+      - image: zmwangx/docker-selenium-python:python-3.6-firefox-slim-stretch
+    <<: *test-template
+
+  test-py37-firefox:
+    docker:
+      - image: zmwangx/docker-selenium-python:python-3.7-firefox-slim-stretch
+    <<: *test-template
+
+  test-py35-chromium:
+    docker:
+      - image: zmwangx/docker-selenium-python:python-3.5-chromium-slim-stretch
+    <<: *test-template
+
+  test-py36-chromium:
+    docker:
+      - image: zmwangx/docker-selenium-python:python-3.6-chromium-slim-stretch
+    <<: *test-template
+
+  test-py37-chromium:
+    docker:
+      - image: zmwangx/docker-selenium-python:python-3.7-chromium-slim-stretch
+    <<: *test-template
+
+workflows:
+  version: 2
+
+  test:
+    jobs: &all-jobs
+      - test-py35-firefox
+      - test-py36-firefox
+      - test-py37-firefox
+      - test-py35-chromium
+      - test-py36-chromium
+      - test-py37-chromium
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs: *all-jobs
