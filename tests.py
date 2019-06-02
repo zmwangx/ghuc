@@ -5,6 +5,7 @@ import pathlib
 import subprocess
 import sys
 import tempfile
+import time
 
 import pytest
 import urllib3
@@ -114,10 +115,20 @@ def run_ghuc_and_verify(good_files, bad_files):
     urls = stdout_data.splitlines()
     assert len(good_files) == len(urls)
     for f, url in zip(good_files, urls):
-        url_sha256 = hashlib.sha256(http.request("GET", url).data).hexdigest()
-        assert (
-            url_sha256 == f.sha256
-        ), "SHA-256 mismatch for %s: expected %s, got %s" % (url, f.sha256, url_sha256)
+        while True:
+            url_sha256 = hashlib.sha256(http.request("GET", url).data).hexdigest()
+            if (
+                url_sha256
+                == "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
+            ):
+                # This is the SHA-256 checksum for "Not Found".
+                time.sleep(1)
+                continue
+            assert url_sha256 == f.sha256, (
+                "SHA-256 mismatch for %s: expected %s, got %s"
+                % (url, f.sha256, url_sha256)
+            )
+            break
 
     if bad_files:
         assert "unsupported MIME type" in stderr_data
