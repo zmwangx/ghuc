@@ -238,7 +238,7 @@ def refresh_cookie_and_token():
 
         try:
             token = driver.execute_script(
-                "return document.querySelector('file-attachment').dataset.uploadPolicyAuthenticityToken;"
+                "return document.querySelector('input[data-csrf=true]').value;"
             )
         except JavascriptException as e:
             write_page_source_and_report_error(
